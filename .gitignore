@@ -6,3 +6,4 @@ data.json
 dump.sh
 nohup*
 static
+.vscode
