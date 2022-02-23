@@ -77,6 +77,26 @@ class BlogPage(Page):
             label="Galería de imágenes"),
     ]
 
+class ViajesPage(Page):
+    date = models.DateField("Fecha Post")
+    intro = models.CharField("Introducción", max_length=250)
+    body = RichTextField(blank=True)
+    tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
+    categories = ParentalManyToManyField('blog.BlogCategory', blank=True)
+
+
+
+    content_panels = Page.content_panels + [
+        
+        FieldPanel('intro'),
+        FieldPanel('body', classname="full"),
+
+    ]
+
+
+
+
+
 class BlogPageGalleryImage(Orderable):
     page = ParentalKey(BlogPage, 
         on_delete=models.CASCADE, 

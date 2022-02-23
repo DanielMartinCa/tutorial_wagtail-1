@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags blog_tags %}
+
+{% block body_class %}template-noticias{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>{{ page.title }}</h1>
+    <p class="meta">{{ page.date }}</p>
+
+
+    <div class="intro">{{ page.intro }}</div>
+
+    {{ page.body|richtext }}
+    {% for n in NoticiasPage %}
+        <h1><a href="{% pageurl post %}">{{ n.title }}</a></h1>
+        {{ n.specific.intro }}
+
+    {% empty %}
+    {% endfor %}
+</div>
+
+{% categories_list %}
+
+{% endblock %}
