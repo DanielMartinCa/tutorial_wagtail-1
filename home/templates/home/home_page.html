@@ -10,14 +10,14 @@
 
 {% block content %}
 <div class="container mt-5">
-    {{ n.title }}   
+    
 {{page.body | richtext}}
 
 {% for n in noticiaspages %}
-    <h2><{{ n.title }}</a></h2>
-    {{ n.intro }}
-
-
+    {{ n.intro }}   
+    <h2><{{ n.intro }}</h2>
+    {{ n.body }}
 {% endfor %}
+
 </div>
 {% endblock content %}

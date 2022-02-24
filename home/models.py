@@ -13,7 +13,7 @@ from wagtail.snippets.models import register_snippet
 
 class HomePage(Page):
     body = RichTextField(blank=True)
-
+    
     content_panels = Page.content_panels + [
         FieldPanel('body', classname="full"),
     ]
@@ -25,19 +25,5 @@ class HomePage(Page):
         
         return context
 
-class NoticiasPage(Page):
-    date = models.DateField("Fecha Noticia")
-    intro = models.CharField("Titular", max_length=250)
-    body = RichTextField(blank=True)
 
-    parent_page_types = [HomePage]
-
-    content_panels = Page.content_panels + [
-        MultiFieldPanel([
-            FieldPanel('date'),
-            ],
-        ),
-        FieldPanel('intro'),
-        FieldPanel('body', classname="full"),            
-    ]
     
