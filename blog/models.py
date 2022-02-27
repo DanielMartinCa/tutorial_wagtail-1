@@ -4,7 +4,7 @@ from django import forms
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from taggit.models import TaggedItemBase
-
+from noticias.models import NoticiasIndexPage, NoticiasPage
 from wagtail.core.models import Page, Orderable
 from wagtail.core.fields import RichTextField
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel,  MultiFieldPanel
@@ -21,6 +21,7 @@ class BlogIndexPage(Page):
     content_panels = Page.content_panels + [
         FieldPanel('introduccion', classname="full")
     ]
+    subpage_types = ['BlogPage','ViajesPage']
 
     def get_context(self, request):
         # Update context to include only published posts, ordered by reverse-chron
@@ -57,7 +58,8 @@ class BlogPage(Page):
     tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
     categories = ParentalManyToManyField('blog.BlogCategory', blank=True)
 
-
+    parent_page_types = ['BlogIndexPage',]
+    subpage_types = []
     search_fields = Page.search_fields + [
         index.SearchField('intro'),
         index.SearchField('body'),
@@ -76,22 +78,31 @@ class BlogPage(Page):
         InlinePanel('gallery_images', 
             label="Galería de imágenes"),
     ]
+    def imagen_blog(self):
+        gallery_item = self.gallery_images.first()
+        if gallery_item:
+            return gallery_item.image
+        else:
+            return None 
 
 class ViajesPage(Page):
     date = models.DateField("Fecha Post")
     intro = models.CharField("Introducción", max_length=250)
     body = RichTextField(blank=True)
+    
     tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
     categories = ParentalManyToManyField('blog.BlogCategory', blank=True)
-
+    parent_page_types = ['BlogIndexPage']
+    subpage_types = []
 
 
     content_panels = Page.content_panels + [
         
         FieldPanel('intro'),
         FieldPanel('body', classname="full"),
-
+        
     ]
+
 
 
 

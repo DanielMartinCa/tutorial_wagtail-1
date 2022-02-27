@@ -1,15 +1,14 @@
 from django.db import models
 from django import forms
 
-from modelcluster.fields import ParentalKey, ParentalManyToManyField
-from modelcluster.contrib.taggit import ClusterTaggableManager
-from taggit.models import TaggedItemBase
+from blog.models import BlogIndexPage, BlogTagIndexPage
+from noticias.models import NoticiasIndexPage, NoticiasPage
 
-from wagtail.core.models import Page, Orderable
+from wagtail.core.models import Page
 from wagtail.core.fields import RichTextField
-from wagtail.admin.edit_handlers import FieldPanel, InlinePanel,  MultiFieldPanel
-from wagtail.images.edit_handlers import ImageChooserPanel
-from wagtail.snippets.models import register_snippet
+from wagtail.admin.edit_handlers import FieldPanel
+
+
 
 class HomePage(Page):
     body = RichTextField(blank=True)
@@ -18,12 +17,7 @@ class HomePage(Page):
         FieldPanel('body', classname="full"),
     ]
     
-    def get_context(self, request):
-        context = super().get_context(request)
-        noticiaspages = self.get_children().live().order_by('-first_published_at')
-        context['noticiaspages'] = noticiaspages
-        
-        return context
+    subpage_types = ['blog.BlogIndexPage','noticias.NoticiasIndexPage','blog.BlogTagIndexPage', 'noticias.NoticiasPage']
 
 
     

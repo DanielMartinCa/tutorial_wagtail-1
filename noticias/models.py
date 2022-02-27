@@ -10,7 +10,9 @@ from wagtail.core.fields import RichTextField
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel,  MultiFieldPanel
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.snippets.models import register_snippet
-from home.models import HomePage
+
+
+
 # Create your models here.
 
 class NoticiasIndexPage(Page):
@@ -19,7 +21,7 @@ class NoticiasIndexPage(Page):
     content_panels = Page.content_panels + [
         FieldPanel('introduccion', classname="full")
     ]
-    parent_page_types = [HomePage]
+    subpage_types = ['NoticiasPage']
     def get_context(self, request):
         # Update context to include only published posts, ordered by reverse-chron
         context = super().get_context(request)
@@ -33,14 +35,21 @@ class NoticiasPage(Page):
     intro = models.CharField("Introducción", max_length=250)
     body = RichTextField(blank=True)
     categories = ParentalManyToManyField('blog.BlogCategory', blank=True)
-
-
-    
+    header_image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    parent_page_types = [NoticiasIndexPage]
+    subpage_types = []
 
     content_panels = Page.content_panels + [
         MultiFieldPanel([
             FieldPanel('date'),
             FieldPanel('categories', widget=forms.CheckboxSelectMultiple),
+            ImageChooserPanel("header_image"),
             ],
             heading='Información'
         ),

@@ -9,10 +9,10 @@
     <h1>{{ page.title }}</h1>
 
     <div class="intro">{{ page.introduccion|richtext }}</div>
-
-    {% for n in noticiaspages %}
-        <h2><a href="{% pageurl post %}">{{ n.title }}</a></h2>
-        {{ n.specific.intro }}
+    
+    {% for noticia in noticiaspages %}
+    <h2><a href="{% pageurl noticia %}">{{ noticia.title }}</a></h2>
+        {{ noticia.specific.intro }}
         {% comment %}
         Quito el body para que no salga
         en índice
