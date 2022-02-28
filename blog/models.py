@@ -140,13 +140,22 @@ class NoticiasPage(Page):
             FieldPanel('date'),
             FieldPanel('categories', widget=forms.CheckboxSelectMultiple),
             ImageChooserPanel("header_image"),
+            InlinePanel('gallery_images', 
+            label="Galería de imágenes"),
             ],
+            
             heading='Información'
         ),
         FieldPanel('intro'),
         FieldPanel('body', classname="full"),
 
     ]
+    def imagen_blog(self):
+        gallery_item = self.gallery_images.first()
+        if gallery_item:
+            return gallery_item.image
+        else:
+            return None 
 
 
 
@@ -166,6 +175,19 @@ class BlogPageGalleryImage(Orderable):
         FieldPanel('caption'),
     ]
 
+class NoticiasPageGalleryImage(Orderable):
+    page = ParentalKey(NoticiasPage, 
+        on_delete=models.CASCADE, 
+        related_name='gallery_images')
+    image = models.ForeignKey(
+        'wagtailimages.Image', on_delete=models.CASCADE, related_name='+'
+    )
+    caption = models.CharField(blank=True, max_length=250)
+
+    panels = [
+        ImageChooserPanel('image'),
+        FieldPanel('caption'),
+    ]
 @register_snippet
 class BlogCategory(models.Model):
     name = models.CharField(max_length=255)
