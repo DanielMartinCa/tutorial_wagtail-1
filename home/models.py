@@ -1,8 +1,10 @@
+
+
 from django.db import models
 from django import forms
 
-from blog.models import BlogIndexPage, BlogTagIndexPage
-from noticias.models import NoticiasIndexPage, NoticiasPage
+from blog.models import BlogIndexPage, BlogTagIndexPage, NoticiasIndexPage, NoticiasPage
+
 
 from wagtail.core.models import Page
 from wagtail.core.fields import RichTextField
@@ -16,8 +18,8 @@ class HomePage(Page):
     content_panels = Page.content_panels + [
         FieldPanel('body', classname="full"),
     ]
-    
-    subpage_types = ['blog.BlogIndexPage','noticias.NoticiasIndexPage','blog.BlogTagIndexPage', 'noticias.NoticiasPage']
+
+    subpage_types = ['blog.BlogIndexPage','blog.NoticiasIndexPage','blog.BlogTagIndexPage','blog.NoticiasPage']
 
 
     
