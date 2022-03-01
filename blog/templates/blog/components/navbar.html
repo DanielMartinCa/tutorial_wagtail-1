@@ -1,3 +1,6 @@
+{% load static %}
+{% load wagtailcore_tags %}
+
 <nav class="mb-2 navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
       <a class="navbar-brand" href="/">Blog</a>
@@ -5,6 +8,13 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          {% for post in menu %}
+          <li class="nav-item"></li>
+          <h4><a href="{% pageurl post %}">{{ post.title }}</a></h4>
+          {% endfor %}
+          </li>
+          </ul>
       </div>
     </div>
   </nav>

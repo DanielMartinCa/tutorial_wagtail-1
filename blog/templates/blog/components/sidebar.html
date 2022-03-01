@@ -1,6 +1,21 @@
+
+{% load static %}
+
+{% load wagtailcore_tags %}
 <div class="col-md-4">
 
-    <h3>Sidebar</h3>
+    <h3>Últimas noticias</h3>
+
+    {% for noticia in noticiaspages %}
+    <h2><a href="{% pageurl noticia %}">{{ noticia.title }}</a></h2>
+        {{ noticia.specific.intro }}
+        {% comment %}
+        Quito el body para que no salga
+        en índice
+        {% endcomment %}
+    {% empty %}
+    <p>No hay posts todavía ... </p>
+    {% endfor %}
   
   </div>
   

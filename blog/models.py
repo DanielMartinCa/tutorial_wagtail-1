@@ -15,6 +15,8 @@ from wagtail.snippets.models import register_snippet
 
 from wagtail.search import index
 
+
+
 class BlogIndexPage(Page):
     introduccion = RichTextField(blank=True)
 
@@ -97,12 +99,24 @@ class ViajesPage(Page):
 
 
     content_panels = Page.content_panels + [
-        
+        MultiFieldPanel([
+            FieldPanel('date'),
+            FieldPanel('tags'),
+            FieldPanel('categories', widget=forms.CheckboxSelectMultiple),
+            ],
+            heading='Información'
+        ),
         FieldPanel('intro'),
         FieldPanel('body', classname="full"),
-
-        
+        InlinePanel('gallery_images', 
+            label="Galería de imágenes"),
     ]
+    def imagen_blog(self):
+        gallery_item = self.gallery_images.first()
+        if gallery_item:
+            return gallery_item.image
+        else:
+            return None 
 
 
 class NoticiasIndexPage(Page):
@@ -112,6 +126,7 @@ class NoticiasIndexPage(Page):
         FieldPanel('introduccion', classname="full")
     ]
     subpage_types = ['NoticiasPage']
+
     def get_context(self, request):
         # Update context to include only published posts, ordered by reverse-chron
         context = super().get_context(request)
@@ -188,6 +203,20 @@ class NoticiasPageGalleryImage(Orderable):
         ImageChooserPanel('image'),
         FieldPanel('caption'),
     ]
+
+class ViajesPageGalleryImage(Orderable):
+    page = ParentalKey(ViajesPage, 
+        on_delete=models.CASCADE, 
+        related_name='gallery_images')
+    image = models.ForeignKey(
+        'wagtailimages.Image', on_delete=models.CASCADE, related_name='+'
+    )
+    caption = models.CharField(blank=True, max_length=250)
+
+    panels = [
+        ImageChooserPanel('image'),
+        FieldPanel('caption'),
+    ]
 @register_snippet
 class BlogCategory(models.Model):
     name = models.CharField(max_length=255)
@@ -207,3 +236,19 @@ class BlogCategory(models.Model):
     class Meta:
         verbose_name_plural = 'categorías de blog'
         verbose_name = 'categoría de blog'
+
+# @register_snippet
+# class FooterText(models.Model):
+#     body = RichTextField()
+
+class Menu(models.Model):
+    pass
+
+    def get_context(self, request):
+        
+        context = self().get_context(request)
+        menu = self.get_children().live()
+        context['menu'] = menu
+        
+        return context
+
