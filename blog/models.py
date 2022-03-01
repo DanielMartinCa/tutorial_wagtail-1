@@ -53,6 +53,7 @@ class BlogPageTag(TaggedItemBase):
     )
 
 
+
 class BlogPage(Page):
     date = models.DateField("Fecha Post")
     intro = models.CharField("Introducción", max_length=250)
@@ -91,7 +92,7 @@ class ViajesPage(Page):
     date = models.DateField("Fecha Post")
     intro = models.CharField("Introducción", max_length=250)
     body = RichTextField(blank=True)
-    
+    coordenadas = models.CharField("coordenadas", blank=True, max_length=500)
     tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
     categories = ParentalManyToManyField('blog.BlogCategory', blank=True)
     parent_page_types = ['BlogIndexPage']
@@ -102,6 +103,7 @@ class ViajesPage(Page):
         MultiFieldPanel([
             FieldPanel('date'),
             FieldPanel('tags'),
+            FieldPanel('coordenadas'),
             FieldPanel('categories', widget=forms.CheckboxSelectMultiple),
             ],
             heading='Información'
@@ -134,9 +136,16 @@ class NoticiasIndexPage(Page):
         context['noticiaspages'] = noticiaspages
         
         return context
+    def noticias_list(context):
+        noticias = NoticiasPage.objects.all().order_by('-date')[:5]
+        return {
+            'request': context['request'],
+            'noticias': noticias
+        }
 
 class NoticiasPage(Page):
     date = models.DateField("Fecha Post")
+    titulo = models.CharField("Titulo", max_length=250, blank=True)
     intro = models.CharField("Introducción", max_length=250)
     body = RichTextField(blank=True)
     categories = ParentalManyToManyField('blog.BlogCategory', blank=True)
@@ -153,6 +162,7 @@ class NoticiasPage(Page):
     content_panels = Page.content_panels + [
         MultiFieldPanel([
             FieldPanel('date'),
+            FieldPanel('titulo'),
             FieldPanel('categories', widget=forms.CheckboxSelectMultiple),
             ImageChooserPanel("header_image"),
             InlinePanel('gallery_images', 

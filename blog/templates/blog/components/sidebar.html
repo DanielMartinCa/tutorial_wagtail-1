@@ -6,8 +6,8 @@
 
     <h3>Últimas noticias</h3>
 
-    {% for noticia in noticiaspages %}
-    <h2><a href="{% pageurl noticia %}">{{ noticia.title }}</a></h2>
+    {% for noticia in blogpages %}
+    <h4><a href="{% pageurl noticia %}">{{ noticia.title }}</a></h4>
         {{ noticia.specific.intro }}
         {% comment %}
         Quito el body para que no salga

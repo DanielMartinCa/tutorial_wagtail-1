@@ -1,18 +1,36 @@
 {% load static %}
 {% load wagtailcore_tags %}
+{% block extra_css %}
+  <style>
+    .nav-item{
+      margin: 20px;
+      
+    }
+    a {
+      color: rgb(219, 113, 113);
+    }
+  </style>
 
+{% endblock extra_css %}
 <nav class="mb-2 navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-      <a class="navbar-brand" href="/">Blog</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          {% for post in menu %}
+          
+          <li class="nav-item" ></li>
+          <h4><a href="/">Home</a></h4>          
+          </li>
           <li class="nav-item"></li>
-          <h4><a href="{% pageurl post %}">{{ post.title }}</a></h4>
-          {% endfor %}
+          <h4><a href="/blog-de-clase">Blog</a></h4>          
+          </li>
+          <li class="nav-item"></li>
+          <h4><a href="/listado-pelis">Películas</a></h4>          
+          </li>
+          <li class="nav-item"></li>
+          <h4><a href="/noticiero-informativo">Noticias</a></h4>          
           </li>
           </ul>
       </div>

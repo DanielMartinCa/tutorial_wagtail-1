@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
 {% load wagtailcore_tags %}
-
 {% block body_class %}template-homepage{% endblock %}
 
 {% block extra_css %}
@@ -11,15 +10,13 @@
 {% block content %}
 <div class="container mt-5">
     {{ page.body|richtext }}
-    {% for post in page.get_children %}
-        <h4><a href="{% pageurl post %}">{{ post.title }}</a></h4>
-        {{ post.specific.intro }}
-        {{ post.specific.body|richtext }}
-    {% endfor %}
     <ul>
-    {% for noticia in blog.get_children %}
-      <li>  {{noticia.date}}
-        <br><a href="{%url 'info_noticia' noticia.pk %}">{{noticia.titulo}}</a></li>
+    {% for noticia in noticiaspages %}
+    <li>  {{noticia.date}}<br>
+        <a href="{% pageurl noticia %}">{{noticia.titulo}}</a><br>
+        {{noticia.intro}}<br>
+    </li>
+        
     {% endfor %}
     </ul>
 </div>

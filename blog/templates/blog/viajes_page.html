@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags blog_tags %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
+{% endblock %}
+{% block body_class %}template-viajepage{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>{{ page.title }}</h1>
+    <p class="meta">{{ page.date }}</p>
+
+   
+
+    
+    <div class="intro">{{ page.intro }}</div><br>
+    <div class="row">
+        {% for item in page.gallery_images.all %}
+        <div class="col-md-3">
+            {% image item.image fill-320x240 %}
+            <p>{{ item.caption }}</p>
+        </div>
+        {% endfor %}
+        </div>
+    {{ page.body|richtext }}
+
+    <div id="map"></div>
+    <p><a href="{{ page.get_parent.url }}">Volver al blog</a></p>
+</div>
+
+{% categories_list %}
+
+{% endblock %}
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+crossorigin=""></script>
+
+<script>
+var map = L.map('map').setView([28.484606115497016, -16.3434099680452], 12);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+L.marker([28.484606115497016, -16.3434099680452]).addTo(map)
+    .bindPopup('Aeropuerto de Tenerife Norte, Santa Cruz de Tenerife')
+    .openPopup();
+</script>
+{% endblock %}
