@@ -4,18 +4,28 @@
 {% load wagtailcore_tags %}
 <div class="col-md-4">
 
-    <h3>Últimas noticias</h3>
-
-    {% for noticia in blogpages %}
-    <h4><a href="{% pageurl noticia %}">{{ noticia.title }}</a></h4>
-        {{ noticia.specific.intro }}
-        {% comment %}
-        Quito el body para que no salga
-        en índice
-        {% endcomment %}
-    {% empty %}
-    <p>No hay posts todavía ... </p>
-    {% endfor %}
+    <h2>Ofertas de viajes</h2>
+    <div class="sidebar">
+    <h4>Rutas por los fiordos</h4>
+    <p> Déjate llevar por nuestros experimentados guías por los preciosos paisajes 
+        de ensueño de Noruega.
+    </p>
+    <p>Disfruta de las vistas mientras pruebas los deliciosos frutos del 
+        mar que nos ofrecen éstas tierras.
+    </p>
+    <img src="/media/images/fiordos-noruegos-kayak-odda-324x23.2e16d0ba.fill-320x240.jpg">
+    </div>
+    <br><br>
+    <div class="sidebar">
+        <h4>Rutas por los Egipto</h4>
+        <p> Descubre lugares increíbles que jamás hubieras imaginado.
+        </p>
+        <p>
+            Te sentirás diminuto ante la magnificiencia de estructuras milenarias,
+            a la vez que los sabores de su gastronomía te transportarán a una nueva dimensión.
+        </p>
+        <img src="/media/original_images/camellos.jpeg" width="320px" height="240px">
+        </div>
   
   </div>
   

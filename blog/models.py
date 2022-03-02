@@ -51,6 +51,23 @@ class BlogPageTag(TaggedItemBase):
         related_name='tagged_items',
         on_delete=models.CASCADE
     )
+class ViajesTagIndexPage(Page):
+    def get_context(self, request):
+
+        # Filter by tag
+        tag = request.GET.get('tag')
+        viajespages = ViajesPage.objects.filter(tags__name=tag)
+
+        # Update template context
+        context = super().get_context(request)
+        context['viajespages'] = viajespages
+        return context
+class ViajePageTag(TaggedItemBase):
+    content_object = ParentalKey(
+        'ViajesPage',
+        related_name='tagged_items',
+        on_delete=models.CASCADE
+    )
 
 
 
@@ -132,7 +149,7 @@ class NoticiasIndexPage(Page):
     def get_context(self, request):
         # Update context to include only published posts, ordered by reverse-chron
         context = super().get_context(request)
-        noticiaspages = self.get_children().live().order_by('-first_published_at')
+        noticiaspages = self.get_children().live().order_by('-first_published_at')[:5]
         context['noticiaspages'] = noticiaspages
         
         return context
@@ -251,14 +268,5 @@ class BlogCategory(models.Model):
 # class FooterText(models.Model):
 #     body = RichTextField()
 
-class Menu(models.Model):
-    pass
 
-    def get_context(self, request):
-        
-        context = self().get_context(request)
-        menu = self.get_children().live()
-        context['menu'] = menu
-        
-        return context
 
