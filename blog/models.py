@@ -264,9 +264,14 @@ class BlogCategory(models.Model):
         verbose_name_plural = 'categorías de blog'
         verbose_name = 'categoría de blog'
 
-# @register_snippet
-# class FooterText(models.Model):
-#     body = RichTextField()
+@register_snippet
+class FooterText(models.Model):
+    titulo = models.CharField(max_length=255)
 
+    def __str__(self):
+        return self.titulo
+    
+    class Meta:
+        verbose_name = 'Footer'
 
 
