@@ -41,6 +41,14 @@ crossorigin=""/>
         </div>
     </ul>
     {{ page.body|richtext }}
+    {% if page.tags.all.count %}
+    <div class="tags">
+    <h3>Tags</h3>
+    {% for tag in page.tags.all %}
+        <a href="{% slugurl 'tags' %}?tag={{ tag }}"><button type="button">{{ tag }}</button></a>
+    {% endfor %}
+    </div>
+{% endif %}
     <p><a href="{{ page.get_parent.url }}">Volver al blog</a></p>
     <h4>Punto de salida del viaje: </h4>
     <div id="mapa"></div><br>    

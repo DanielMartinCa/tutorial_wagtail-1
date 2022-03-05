@@ -29,6 +29,7 @@ class BlogIndexPage(Page):
         # Update context to include only published posts, ordered by reverse-chron
         context = super().get_context(request)
         blogpages = self.get_children().live().order_by('-first_published_at')
+
         context['blogpages'] = blogpages
         
         return context
@@ -39,7 +40,6 @@ class BlogTagIndexPage(Page):
         # Filter by tag
         tag = request.GET.get('tag')
         blogpages = BlogPage.objects.filter(tags__name=tag)
-
         # Update template context
         context = super().get_context(request)
         context['blogpages'] = blogpages
@@ -68,6 +68,7 @@ class ViajePageTag(TaggedItemBase):
         related_name='tagged_items',
         on_delete=models.CASCADE
     )
+
 
 
 
@@ -149,12 +150,12 @@ class NoticiasIndexPage(Page):
     def get_context(self, request):
         # Update context to include only published posts, ordered by reverse-chron
         context = super().get_context(request)
-        noticiaspages = self.get_children().live().order_by('-first_published_at')[:5]
+        noticiaspages = self.get_children().live().order_by('-first_published_at')
         context['noticiaspages'] = noticiaspages
         
         return context
     def noticias_list(context):
-        noticias = NoticiasPage.objects.all().order_by('-date')[:5]
+        noticias = NoticiasPage.objects.all().order_by('-date')
         return {
             'request': context['request'],
             'noticias': noticias
