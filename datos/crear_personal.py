@@ -7,6 +7,7 @@ python manage.py shell < datos/crear_personal.py
 '''
 
 from personalempresa.models import PersonalEmpresa
+from django.utils.text import slugify
 import json
 import os
 '''
@@ -19,15 +20,11 @@ import os
 },
 
 '''
-
-
-
 #lista de personas del json
 if os.path.exists("datos/PersonalEmpresa.json"):
-    personal = json.load(open("datos/PersonalEmpresa.json"))
+    personal = json.load(open("datos/PersonalEmpresa.json", encoding="utf-8"))
 else:
-    personal = json.load(open("PersonalEmpresa.json"))
-
+    personal = json.load(open("PersonalEmpresa.json", encoding="utf-8"))
 
 for p1 in personal:
     p = PersonalEmpresa()
