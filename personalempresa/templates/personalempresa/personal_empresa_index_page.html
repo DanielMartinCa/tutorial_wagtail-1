@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags %}
+
+{% block body_class %}template-personalindexpage{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>{{ page.title }}</h1>
+<hr>
+
+    <table id="personal">
+        <thead>
+            <tr><td>Nombre</td><td>Apellidos</td><td>Email</td><td>Género</td><td>Departamento</td></tr>
+        </thead>
+        <tbody>
+        {% for persona in personal %}
+        <tr><td>{{persona.nombre}}</td><td>{{persona.apellidos}}</td>
+        <td>{{persona.email}}</td><td>{{persona.genero}}</td><td>{{persona.departamento}}</td>
+        </tr>
+        {% endfor %}
+</tbody>
+</table>
+</div>
+
+{% endblock %}
+{% block extra_js %}
+<script type="text/javascript" src="//code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="//cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+<script> 
+$(document).ready( function () {
+    $('#personal').DataTable();
+} );
+</script>
+{% endblock %}
