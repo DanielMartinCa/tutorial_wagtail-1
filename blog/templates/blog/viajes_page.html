@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags blog_tags %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+crossorigin=""/>
+    <style>
+        ul {
+            list-style: none;
+        }
+        #mapa { height: 300px ;
+            width: 300px;
+            clear: left;
+            margin-top: 50px;
+            float: left;
+            margin-left:25%;
+            background-color: black;
+
+        }
+    </style>
+{% endblock %}
+{% block body_class %}template-viajepage{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>{{ page.title }}</h1>
+    <p class="meta">{{ page.date }}</p>    
+    <div class="intro">{{ page.intro }}</div><br>
+    <ul >
+    <div class="row">
+        {% for item in page.gallery_images.all %}
+        <li>
+        <div class="col-md-3">
+            {% image item.image fill-320x240 %}
+            <p>{{ item.caption }}</p>
+        </div>
+        </li>
+        {% endfor %}
+        </div>
+    </ul>
+    {{ page.body|richtext }}
+    {% if page.tags.all.count %}
+    <div class="tags">
+    <h3>Tags</h3>
+    {% for tag in page.tags.all %}
+        <a href="{% slugurl 'tags' %}?tag={{ tag }}"><button type="button">{{ tag }}</button></a>
+    {% endfor %}
+    </div>
+{% endif %}
+    <p><a href="{{ page.get_parent.url }}">Volver al blog</a></p>
+    <h4>Punto de salida del viaje: </h4>
+    <div id="mapa"></div><br>    
+</div>
+
+{% endblock %}
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+crossorigin=""></script>
+
+<script>
+    var mimapa = L.map('mapa').setView([60.46703498540409, 7.0686799983672035], 13);
+
+    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+    maxZoom: 18
+    }).addTo(mimapa);
+    L.marker([60.46703498540409, 7.0686799983672035]).addTo(mimapa).bindPopup("CPI Los Enlaces");
+    
+</script>
+
+{% endblock %}

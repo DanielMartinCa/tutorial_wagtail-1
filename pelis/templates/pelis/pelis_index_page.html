@@ -1,33 +1,45 @@
 {% extends "base.html" %}
 
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags wagtailimages_tags %}
 
 {% block body_class %}template-blogindexpage{% endblock %}
+
+{% block extra_css %}        
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+<style>
+    body {
+        background-color: rgb(252, 223, 191);
+    }
+</style>
+{% endblock %}
 
 {% block content %}
 <div class="container">
     <h1>{{ page.title }}</h1>
-<hr>
-<p><a href="?decada=90">Década de los 90</a></p>
-<p><a href="?genero=drama">Drama</a></p>
-<hr>
-    <ul class="list-group">
-    {% for peli in peliculas %}
-    <li class="list-group-item">{{peli.title}}</li>
-    
-    {% empty %}
-    <p>No hay posts todavía ... </p>
-    {% endfor %}
-</ul>
-
-{% if peliculas.paginator.count > 1 %}
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                {% include "includes/pagination.html" with subpages=peliculas %}
-                </div>
-            </div>
-        </div>
-    {% endif %}
+    <table id="peliculas">
+        <thead><tr><td>Titulo</td><td>Año</td><td>Posicion</td><td>Genero</td><td></td></tr></thead>
+        <tbody>
+        {% for peli in peliculas %}
+        <tr><td>{{peli.title}}</td><td>{{peli.year}}</td><td class="text-center">{{peli.place}}</td><td>{{peli.generos_str}}</td>
+            <td><img src="{{peli.imagen}}" alt="{{peli.title}}"></td></tr>
+        {% endfor %}
+    </tbody>
+    </table>>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript" src="//code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="//cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="//cdn.datatables.net/plug-ins/1.11.4/i18n/es_es.json"></script>
+<script>
+    $(document).ready( function () {
+        $('#peliculas').DataTable({
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.11.4/i18n/es_es.json'
+            }
+        });
+    } );
+</script>
+
 {% endblock %}

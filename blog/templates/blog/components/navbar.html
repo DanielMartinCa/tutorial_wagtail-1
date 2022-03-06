@@ -1,0 +1,44 @@
+{% load static %}
+{% load wagtailcore_tags %}
+{% block extra_css %}
+  <style>
+    .nav-item{
+      margin: 20px;
+      
+    }
+    a {
+      color: rgb(219, 113, 113);
+    }
+  </style>
+
+{% endblock extra_css %}
+<nav class="mb-2 navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          
+          <li class="nav-item" ></li>
+          <h4><a href="/">Home</a></h4>          
+          </li>
+          <li class="nav-item"></li>
+          <h4><a href="/blog-de-clase">Blog</a></h4>          
+          </li>
+          <li class="nav-item"></li>
+          <h4><a href="/listado-pelis">Películas</a></h4>          
+          </li>
+          <li class="nav-item"></li>
+          <h4><a href="/lista-de-personal">Personal</a></h4>          
+          </li>
+          <li class="nav-item"></li>
+          <h4><a href="/noticiero-informativo">Noticias</a></h4>          
+          </li>
+          <li class="nav-item"></li>
+          <h4><a href="/contacto">Contacto</a></h4>          
+          </li>
+          </ul>
+      </div>
+    </div>
+  </nav>
