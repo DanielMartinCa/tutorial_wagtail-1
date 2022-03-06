@@ -279,7 +279,7 @@ class FormField(AbstractFormField):
     )
 
 
-@register_snippet
+
 class ContactPage(AbstractEmailForm):
 
     template = "blog/contact/contact_page.html"
