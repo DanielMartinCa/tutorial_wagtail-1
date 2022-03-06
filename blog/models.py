@@ -7,11 +7,11 @@ from taggit.models import TaggedItemBase
 
 from wagtail.core.models import Page, Orderable
 from wagtail.core.fields import RichTextField
-from wagtail.admin.edit_handlers import FieldPanel, InlinePanel,  MultiFieldPanel
+from wagtail.admin.edit_handlers import FieldPanel, InlinePanel,  MultiFieldPanel, FieldRowPanel
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.snippets.models import register_snippet
 
-
+from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 
 from wagtail.search import index
 
@@ -68,7 +68,6 @@ class ViajePageTag(TaggedItemBase):
         related_name='tagged_items',
         on_delete=models.CASCADE
     )
-
 
 
 
@@ -141,14 +140,13 @@ class ViajesPage(Page):
 
 class NoticiasIndexPage(Page):
     introduccion = RichTextField(blank=True)
-
+    # pagina que servirá como índice para las noticias
     content_panels = Page.content_panels + [
         FieldPanel('introduccion', classname="full")
     ]
     subpage_types = ['NoticiasPage']
 
     def get_context(self, request):
-        # Update context to include only published posts, ordered by reverse-chron
         context = super().get_context(request)
         noticiaspages = self.get_children().live().order_by('-first_published_at')
         context['noticiaspages'] = noticiaspages
@@ -200,10 +198,6 @@ class NoticiasPage(Page):
         else:
             return None 
 
-
-
-
-
 class BlogPageGalleryImage(Orderable):
     page = ParentalKey(BlogPage, 
         on_delete=models.CASCADE, 
@@ -245,7 +239,7 @@ class ViajesPageGalleryImage(Orderable):
         ImageChooserPanel('image'),
         FieldPanel('caption'),
     ]
-@register_snippet
+
 class BlogCategory(models.Model):
     name = models.CharField(max_length=255)
     icon = models.ForeignKey(
@@ -265,7 +259,7 @@ class BlogCategory(models.Model):
         verbose_name_plural = 'categorías de blog'
         verbose_name = 'categoría de blog'
 
-@register_snippet
+@register_snippet # añadimos a fragmentos el footer para poder editarlo desde el admin
 class FooterText(models.Model):
     titulo = models.CharField(max_length=255)
 
@@ -276,3 +270,35 @@ class FooterText(models.Model):
         verbose_name = 'Footer'
 
 
+
+class FormField(AbstractFormField):
+    page = ParentalKey(
+        'ContactPage',
+        on_delete=models.CASCADE,
+        related_name='form_fields',
+    )
+
+
+@register_snippet
+class ContactPage(AbstractEmailForm):
+
+    template = "blog/contact/contact_page.html"
+    # Esta será la pgina de contacto
+    # y esta de debajo sera la de agradecimiento al enviarlo
+    landing_page_template = "blog/contact/contact_page_landing.html"
+
+    intro = RichTextField(blank=True)
+    thank_you_text = RichTextField(blank=True)
+
+    content_panels = AbstractEmailForm.content_panels + [
+        FieldPanel('intro'),
+        InlinePanel('form_fields', label='Form Fields'),
+        FieldPanel('thank_you_text'),
+        MultiFieldPanel([
+            FieldRowPanel([
+                FieldPanel('from_address', classname="col6"),
+                FieldPanel('to_address', classname="col6"),
+            ]),
+            FieldPanel("subject"),
+        ], heading="Email Settings"),
+    ]

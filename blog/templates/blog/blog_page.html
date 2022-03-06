@@ -3,7 +3,30 @@
 {% load wagtailcore_tags wagtailimages_tags blog_tags %}
 
 {% block body_class %}template-blogpage{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+crossorigin=""/>
+    <style>
+        ul {
+            list-style: none;
+        }
+        #mapa { height: 300px ;
+            width: 300px;
+            clear: left;
+            margin-top: 50px;
+            float: left;
+            margin-left:25%;
+            background-color: black;
 
+        }
+        
+        body {
+        background-color: rgb(252, 223, 191);
+        }
+
+    </style>
+{% endblock %}
 {% block content %}
 <div class="container">
     <h1>{{ page.title }}</h1>
@@ -36,7 +59,10 @@
     </div>
     {% endfor %}
     </div>
-    
+    {% if page.tags == Viajes %}
+    <h4>Punto de salida del viaje: </h4>
+    <div id="mapa"></div><br>
+    {% endif %}
     {% if page.tags.all.count %}
     <div class="tags">
         <h3>Tags</h3>
@@ -49,5 +75,22 @@
 </div>
 
 {% categories_list %}
+
+{% endblock %}
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+crossorigin=""></script>
+
+<script>
+    var mimapa = L.map('mapa').setView([60.46703498540409, 7.0686799983672035], 13);
+
+    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+    maxZoom: 18
+    }).addTo(mimapa);
+    L.marker([60.46703498540409, 7.0686799983672035]).addTo(mimapa).bindPopup("CPI Los Enlaces");
+    
+</script>
 
 {% endblock %}

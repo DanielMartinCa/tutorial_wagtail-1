@@ -26,7 +26,7 @@ class HomePage(Page):
         context['noticiaspages'] = noticiaspages
         
         return context
-    subpage_types = ['blog.BlogIndexPage','blog.NoticiasIndexPage','blog.BlogTagIndexPage','blog.NoticiasPage']
+    subpage_types = ['blog.BlogIndexPage','blog.NoticiasIndexPage','blog.BlogTagIndexPage','blog.NoticiasPage', 'blog.ContactPage']
 
 
     

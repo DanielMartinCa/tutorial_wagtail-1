@@ -4,12 +4,17 @@
 {% block body_class %}template-homepage{% endblock %}
 
 {% block extra_css %}
-
+<style>
+    body {
+        background-color: rgb(252, 223, 191);
+    }
+</style>
 {% endblock extra_css %}
 
 {% block content %}
 <div class="container mt-5">
     {{ page.body|richtext }}
+    <p><H1>Últimas noticias</H1></p>
     <ul>
     {% for noticia in noticiaspages %}
     <li>  {{noticia.date}}<br>

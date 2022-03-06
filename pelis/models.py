@@ -1,9 +1,8 @@
 from django.db import models
-
+from django import forms
 from wagtail.core.models import Page 
 from wagtail.core.fields import RichTextField
 from wagtail.admin.edit_handlers import FieldPanel
-
 from wagtail.snippets.models import register_snippet
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.text import slugify
@@ -95,6 +94,3 @@ class PelisIndexPage(Page):
         
         return context
 
-
-
-    
