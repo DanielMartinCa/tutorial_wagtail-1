@@ -53,5 +53,5 @@ class PersonalEmpresaIndexPage(Page):
 
     def get_context(self, request):
         context = super().get_context(request)
-        context['personal'] =PersonalEmpresa.objects.all().order_by("nombre")
+        context['personal'] =PersonalEmpresa.objects.all().order_by("apellidos")
         return context
