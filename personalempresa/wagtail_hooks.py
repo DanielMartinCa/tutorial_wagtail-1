@@ -7,7 +7,10 @@ class PersonalEmpresaAdmin(ModelAdmin):
     model = PersonalEmpresa
     search_fields = ('nombre', 'apellido', 'departamento')
     menu_icon = 'doc-full-inverse' 
-    menu_order = 75 
+    menu_order = 75
+    list_filter= ('genero', 'departamento')
+    list_display= ('nombre', 'apellidos','email', 'genero', 'departamento')
+
 
 
 
