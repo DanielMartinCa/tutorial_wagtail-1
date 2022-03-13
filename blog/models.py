@@ -76,8 +76,6 @@ class BlogPage(Page):
     intro = models.CharField("Introducción", max_length=250)
     body = RichTextField(blank=True)
     tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
-    categories = ParentalManyToManyField('blog.BlogCategory', blank=True)
-
     parent_page_types = ['BlogIndexPage',]
     subpage_types = []
     search_fields = Page.search_fields + [
@@ -88,8 +86,7 @@ class BlogPage(Page):
     content_panels = Page.content_panels + [
         MultiFieldPanel([
             FieldPanel('date'),
-            FieldPanel('tags'),
-            FieldPanel('categories', widget=forms.CheckboxSelectMultiple),
+            FieldPanel('tags'),            
             ],
             heading='Información'
         ),
@@ -111,7 +108,6 @@ class ViajesPage(Page):
     body = RichTextField(blank=True)
     coordenadas = models.CharField("coordenadas", blank=True, max_length=500)
     tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
-    categories = ParentalManyToManyField('blog.BlogCategory', blank=True)
     parent_page_types = ['BlogIndexPage']
     subpage_types = []
 
@@ -121,7 +117,7 @@ class ViajesPage(Page):
             FieldPanel('date'),
             FieldPanel('tags'),
             FieldPanel('coordenadas'),
-            FieldPanel('categories', widget=forms.CheckboxSelectMultiple),
+            
             ],
             heading='Información'
         ),
@@ -163,8 +159,7 @@ class NoticiasPage(Page):
     date = models.DateField("Fecha Post")
     titulo = models.CharField("Titulo", max_length=250, blank=True)
     intro = models.CharField("Introducción", max_length=250)
-    body = RichTextField(blank=True)
-    categories = ParentalManyToManyField('blog.BlogCategory', blank=True)
+    body = RichTextField(blank=True)    
     header_image = models.ForeignKey(
         "wagtailimages.Image",
         null=True,
@@ -179,7 +174,6 @@ class NoticiasPage(Page):
         MultiFieldPanel([
             FieldPanel('date'),
             FieldPanel('titulo'),
-            FieldPanel('categories', widget=forms.CheckboxSelectMultiple),
             ImageChooserPanel("header_image"),
             InlinePanel('gallery_images', 
             label="Galería de imágenes"),
